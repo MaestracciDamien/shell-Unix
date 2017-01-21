@@ -82,7 +82,17 @@ void print_redirection(cmd *c, int i){
 
 //Frees the memory allocated to store redirection info
 void free_redirection(cmd *c){
-    //your implementation comes here
+  int i;
+  for (i= 0; i < c->nb_cmd_members; i++)
+  {
+    free(c->redirection[i][STDIN]);
+    free(c->redirection[i][STDOUT]);
+    free(c->redirection[i][STDERR]);
+    free(c->redirection[i]);
+    free(c->redirection_type[i]);
+  }
+  free(c->redirection);
+  free(c->redirection_type);
 }
 
 //Remplit les champs cmd_args et nb_args_membres
