@@ -73,9 +73,9 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-  (c->redirection[i][[STDIN] == NULL ) ? printf("redirection[%d][[STDIN]=NULL\n",i) : printf("redirection[%d][[STDIN]=\"%s\"\n",i,c->redirection[i][[STDIN]);
-  (c->redirection[i][[STDOUT] == NULL ) ? printf("redirection[%d][[STDOUT]=NULL\n",i) : printf("redirection[%d][[STDOUT]=\"%s\"\n",i,c->redirection[i][[STDOUT]);
-  (c->redirection[i][[STDERR] == NULL ) ? printf("redirection[%d][[STDERR]=NULL\n",i) : printf("redirection[%d][[STDERR]=\"%s\"\n",i,c->redirection[i][[STDERR);
+  (c->redirection[i][STDIN] == NULL ) ? printf("redirection[%d][STDIN]=NULL\n",i) : printf("redirection[%d][STDIN]=\"%s\"\n",i,c->redirection[i][STDIN]);
+  (c->redirection[i][STDOUT] == NULL ) ? printf("redirection[%d][STDOUT]=NULL\n",i) : printf("redirection[%d][STDOUT]=\"%s\"\n",i,c->redirection[i][STDOUT]);
+  (c->redirection[i][STDERR] == NULL ) ? printf("redirection[%d][STDERR]=NULL\n",i) : printf("redirection[%d][STDERR]=\"%s\"\n",i,c->redirection[i][STDERR]);
 
     //your implementation comes here
 }
@@ -161,12 +161,12 @@ void parse_redirection(unsigned int i, cmd *c){
     c->redirection_type[i] = (char **) malloc (sizeof(char*) *3);
     char * token;
     char * delim = "<";
-    token = strtok(s, <);
+  //  token = strtok(s, <);
     if (token != NULL)
     {
       c->redirection[i][STDIN] = (char *) malloc (sizeof(char)*strlen(token));
       memcpy(c->redirection[i][STDIN],token,strlen(token));
     }
-    delim = ">"
+    delim = ">";
 
 }

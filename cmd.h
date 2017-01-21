@@ -1,5 +1,8 @@
 //Command is well-formed
 #define MYSHELL_CMD_OK 0
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
 
 typedef struct command {
     //the command originally inputed by the user
