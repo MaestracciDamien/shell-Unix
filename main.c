@@ -31,6 +31,8 @@ int main(int argc, char** argv)
 		cmd   * test = (cmd *) malloc (sizeof(cmd));
 		parse_members(readlineptr, test );
 		print_members(test);
+		parse_members_args(test);
+		print_members_args(test);
         //Your code goes here.......
         //Parse the comand
         //Execute the comand

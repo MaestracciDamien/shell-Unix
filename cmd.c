@@ -12,6 +12,14 @@
 //Prints the contents of members_args to the console
 void print_members_args(cmd *c){
     //your implementation comes here
+    int i,j;
+    for (i =0; i < c->nb_cmd_members; i++)
+    {
+      for (j=0; j< c->nb_members_args[i]; j++ )
+      {
+        printf("cmd_members_args[%d][%d]=\"%s\"\n",i,j,cmd_members_args[i][j] );
+      }
+    }
 }
 
 //Frees the memory allocated to store member arguments
