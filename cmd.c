@@ -35,7 +35,17 @@ void print_members_args(cmd *c){
 
 //Frees the memory allocated to store member arguments
 void free_members_args(cmd *c){
-    //your implementation comes here
+    int i,j;
+    for (i =0; i < c->nb_cmd_members; i++)
+    {
+      for (j=0; j<= c->nb_members_args[i]; j++ )
+      {
+          free(c->cmd_members_args[i][j]);
+      }
+      free(c->cmd_members_args[i]);
+    }
+    free(c->cmd_members_args);
+    free(c->nb_members_args);
 }
 
 //Prints the contents of members to the console
