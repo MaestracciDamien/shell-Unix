@@ -20,6 +20,10 @@ void print_members_args(cmd *c){
         printf("cmd_members_args[%d][%d]=\"%s\"\n",i,j,c->cmd_members_args[i][j] );
       }
     }
+    for (i =0; i < c->nb_cmd_members; i++)
+    {
+      printf("nb_members_args[%d]=%d\n",i,c->nb_members_args[i] );
+    }
 }
 
 //Frees the memory allocated to store member arguments
@@ -46,7 +50,7 @@ void free_members(cmd *c){
   {
     free(c->cmd_members[i]);
   }
-  free(c->nb_cmd_members);
+  free(c->cmd_members);
     //your implementation comes here
 }
 
@@ -70,7 +74,6 @@ void parse_members_args(cmd *c){
     		int j=0;
   	    char *token = strtok(c->cmd_members[i]," ");
         c->cmd_members_args[i] = NULL;
-        c->nb_members_args[i] = NULL;
   	    while (token!=NULL && strcmp(token,"<")!=0 && strcmp(token,">")!=0 && strcmp(token,">>")!=0)
         {
     	    	int length = strlen(token)+1;
@@ -82,7 +85,7 @@ void parse_members_args(cmd *c){
       		    token = strtok(NULL," ");
 
   	    }
-        c->nb_members_args[i] =j;
+        c->nb_members_args[i] = j;
         i++;
     }
 
