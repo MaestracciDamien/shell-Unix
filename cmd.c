@@ -35,7 +35,17 @@ void print_members_args(cmd *c){
 
 //Frees the memory allocated to store member arguments
 void free_members_args(cmd *c){
-    //your implementation comes here
+    int i,j;
+    for (i =0; i < c->nb_cmd_members; i++)
+    {
+      for (j=0; j<= c->nb_members_args[i]; j++ )
+      {
+          free(c->cmd_members_args[i][j]);
+      }
+      free(c->cmd_members_args[i]);
+    }
+    free(c->cmd_members_args);
+    free(c->nb_members_args);
 }
 
 //Prints the contents of members to the console
@@ -105,8 +115,6 @@ void parse_members(char *s,cmd *c){
     //your implementation comes here
     c->init_cmd = (char *) malloc (sizeof(char) * strlen(s));
     memcpy(c->init_cmd,s,strlen(s));
-    printf("%s",c->init_cmd );
-
     int i =0;
     char * token;
     const char pipe[1] = "|";

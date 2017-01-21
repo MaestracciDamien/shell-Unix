@@ -33,6 +33,7 @@ int main(int argc, char** argv)
 		print_members(test);
 		parse_members_args(test);
 		print_members_args(test);
+		free_members_args(test);
         //Your code goes here.......
         //Parse the comand
         //Execute the comand
