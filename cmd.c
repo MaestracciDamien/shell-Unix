@@ -15,9 +15,16 @@ void print_members_args(cmd *c){
     int i,j;
     for (i =0; i < c->nb_cmd_members; i++)
     {
-      for (j=0; j< c->nb_members_args[i]; j++ )
+      for (j=0; j<= c->nb_members_args[i]; j++ )
       {
+        if (c->cmd_members_args[i][j]== NULL)
+        {
+          printf("cmd_members_args[%d][%d]=NULL\n",i,j);
+        }
+        else
+        {
         printf("cmd_members_args[%d][%d]=\"%s\"\n",i,j,c->cmd_members_args[i][j] );
+        }
       }
     }
     for (i =0; i < c->nb_cmd_members; i++)
@@ -85,6 +92,8 @@ void parse_members_args(cmd *c){
       		    token = strtok(NULL," ");
 
   	    }
+        c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
+        c->cmd_members_args[i][j] = NULL;
         c->nb_members_args[i] = j;
         i++;
     }
