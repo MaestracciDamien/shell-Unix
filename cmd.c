@@ -7,6 +7,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 //Your includes come here
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 //Prints the contents of members_args to the console
 void print_members_args(cmd *c){
@@ -53,7 +56,24 @@ void free_redirection(cmd *c){
 
 //Remplit les champs cmd_args et nb_args_membres
 void parse_members_args(cmd *c){
-    //your implementation comes here
+	int i=0;
+    int cpt=0;
+    c->cmd_members_args =  NULL;
+    while (cpt < (c->nb_cmd_members)){
+  		int j=0;
+	    char *token = strtok(c->cmd_members[cpt]," ");
+	    while (token!=NULL){
+	    	int length = strlen(token);
+	    	printf("%s\n", token );
+	    	c->cmd_members_args=(char***)realloc(c->cmd_members_args, sizeof(char*) * (i+1));
+	    	memcpy(c->cmd_members_args[cpt][j],token,length);
+  		    j++; 
+  		    token = strtok(NULL," "); 		    
+  		    i++;
+	    }
+	    cpt++;
+    }
+
 }
 
 //Remplit les champs initial_cmd, membres_cmd et nb_membres
