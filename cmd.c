@@ -22,7 +22,7 @@ void free_members_args(cmd *c){
 void print_members(cmd *c){
   int i;
 
-  printf("nb_cmd_members=%d\n",c->nb_cmd_members );
+  printf("\nnb_cmd_members=%d\n",c->nb_cmd_members );
   for (i= 0; i < c->nb_cmd_members; i++)
   {
     printf("cmd_members[%d]=\"%s\"\n",i, c->cmd_members[i]);
@@ -32,6 +32,12 @@ void print_members(cmd *c){
 
 //Frees the memory allocated to store member information
 void free_members(cmd *c){
+  int i;
+  for (i= 0; i < c->nb_cmd_members; i++)
+  {
+    free(c->cmd_members[i]);
+  }
+  free(c->nb_cmd_members);
     //your implementation comes here
 }
 
@@ -66,7 +72,7 @@ void parse_members(char *s,cmd *c){
     {
       c->cmd_members = (char **) realloc(c->cmd_members, sizeof(char *) * (i+1));
       int  length = strlen(token)+1;
-      c->cmd_members[i] = (char *) malloc (1000);
+      c->cmd_members[i] = (char *) malloc (length);
       memcpy(c->cmd_members[i],token,length);
       token = strtok(NULL, pipe);
       i++;
