@@ -57,18 +57,23 @@ void parse_members_args(cmd *c){
 	int i=0;
     int cpt=0;
     c->cmd_members_args =  NULL;
+    c->nb_members_args =NULL;
     while (cpt < (c->nb_cmd_members)){
   		int j=0;
 	    char *token = strtok(c->cmd_members[cpt]," ");
-	    while (token!=NULL){
+	    while (token!=NULL && strcmp(token,"<")!=0 && strcmp(token,">")!=0 && strcmp(token,">>")!=0){
 	    	int length = strlen(token);
 	    	printf("%s\n", token );
 	    	c->cmd_members_args=(char***)realloc(c->cmd_members_args, sizeof(char*) * (i+1));
+	    	c->nb_members_args=(unsigned int*)realloc(c->nb_members_args, sizeof(int*) * (i+1));
 	    	memcpy(c->cmd_members_args[cpt][j],token,length);
   		    j++;
   		    token = strtok(NULL," ");
   		    i++;
 	    }
+	    c->nb_members_args[cpt]=j-1;
+	    c->cmd_members_args=(char***)realloc(c->cmd_members_args, sizeof(char*) * (i+1));
+	    memcpy(c->cmd_members_args[cpt][j],token,1);
 	    cpt++;
     }
 
