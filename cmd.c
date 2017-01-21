@@ -83,16 +83,17 @@ void print_redirection(cmd *c, int i){
 //Frees the memory allocated to store redirection info
 void free_redirection(cmd *c){
   int i;
-  for (i= 0; i < c->nb_cmd_members; i++)
-  {
-    free(c->redirection[i][STDIN]);
-    free(c->redirection[i][STDOUT]);
-    free(c->redirection[i][STDERR]);
-    free(c->redirection[i]);
-    free(c->redirection_type[i]);
-  }
-  free(c->redirection);
-  free(c->redirection_type);
+for (i= 0; i < c->nb_cmd_members; i++)
+{
+  free(c->redirection[i][STDIN]);
+  free(c->redirection[i][STDOUT]);
+  free(c->redirection[i][STDERR]);
+  free(c->redirection[i]);
+  free(c->redirection_type[i]);
+}
+free(c->redirection);
+free(c->redirection_type);
+    //your implementation comes here
 }
 
 //Remplit les champs cmd_args et nb_args_membres
@@ -164,6 +165,8 @@ void parse_redirection(unsigned int i, cmd *c){
     if (token != NULL)
     {
       c->redirection[i][STDIN] = (char *) malloc (sizeof(char)*strlen(token));
+      memcpy(c->redirection[i][STDIN],token,strlen(token));
     }
+    delim = ">"
 
 }
