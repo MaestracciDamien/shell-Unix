@@ -94,6 +94,7 @@ void parse_members_args(cmd *c){
   	    }
         c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
         c->cmd_members_args[i][j] = NULL;
+
         c->nb_members_args[i] = j;
         i++;
     }
@@ -105,8 +106,6 @@ void parse_members(char *s,cmd *c){
     //your implementation comes here
     c->init_cmd = (char *) malloc (sizeof(char) * strlen(s));
     memcpy(c->init_cmd,s,strlen(s));
-    printf("%s",c->init_cmd );
-
     int i =0;
     char * token;
     const char pipe[1] = "|";
