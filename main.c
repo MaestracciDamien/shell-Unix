@@ -22,19 +22,21 @@ int main(int argc, char** argv)
 	while(ret != MYSHELL_FCT_EXIT)
 	{
 		//Get your session info
-        infos=getpwuid(getuid());
+    infos=getpwuid(getuid());
 		gethostname(hostname, 256);
 		getcwd(workingdirectory, 256);
         //Print it to the console
-		sprintf(str, "\n{myshell}%s@%s:%s$ ", infos->pw_name, hostname, workingdirectory);
+		sprintf(str, "\n{myshell}%s@%s:%s$ \n", infos->pw_name, hostname, workingdirectory);
 		readlineptr = readline(str);
-        
+		cmd   * test = (cmd *) malloc (sizeof(cmd));
+		parse_members(readlineptr, test );
+		print_members(test);
         //Your code goes here.......
         //Parse the comand
         //Execute the comand
         //Clean the house
         //..........
-        
+
 	}
 	//..........
 	return 0;
