@@ -7,9 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 //Your includes come here
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 //Prints the contents of members_args to the console
 void print_members_args(cmd *c){
@@ -67,8 +65,8 @@ void parse_members_args(cmd *c){
 	    	printf("%s\n", token );
 	    	c->cmd_members_args=(char***)realloc(c->cmd_members_args, sizeof(char*) * (i+1));
 	    	memcpy(c->cmd_members_args[cpt][j],token,length);
-  		    j++; 
-  		    token = strtok(NULL," "); 		    
+  		    j++;
+  		    token = strtok(NULL," ");
   		    i++;
 	    }
 	    cpt++;
