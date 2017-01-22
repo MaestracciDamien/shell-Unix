@@ -73,11 +73,9 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-  (c->redirection[i][[STDIN] == NULL ) ? printf("redirection[%d][[STDIN]=NULL\n",i) : printf("redirection[%d][[STDIN]=\"%s\"\n",i,c->redirection[i][[STDIN]);
-  (c->redirection[i][[STDOUT] == NULL ) ? printf("redirection[%d][[STDOUT]=NULL\n",i) : printf("redirection[%d][[STDOUT]=\"%s\"\n",i,c->redirection[i][[STDOUT]);
-  (c->redirection[i][[STDERR] == NULL ) ? printf("redirection[%d][[STDERR]=NULL\n",i) : printf("redirection[%d][[STDERR]=\"%s\"\n",i,c->redirection[i][[STDERR);
-
-    //your implementation comes here
+  (c->redirection[i][STDIN] == NULL ) ? printf("redirection[%d][[STDIN]=NULL\n",i) : printf("redirection[%d][[STDIN]=\"%s\"\n",i,c->redirection[i][STDIN]);
+  (c->redirection[i][STDOUT] == NULL ) ? printf("redirection[%d][[STDOUT]=NULL\n",i) : printf("redirection[%d][[STDOUT]=\"%s\"\n",i,c->redirection[i][STDOUT]);
+  (c->redirection[i][STDERR] == NULL ) ? printf("redirection[%d][[STDERR]=NULL\n",i) : printf("redirection[%d][[STDERR]=\"%s\"\n",i,c->redirection[i][STDERR]);
 }
 
 //Frees the memory allocated to store redirection info
