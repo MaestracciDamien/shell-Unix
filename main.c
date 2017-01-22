@@ -35,6 +35,10 @@ int main(int argc, char** argv)
 		print_members_args(test);*/ //fait bugger parse_redirection
 		parse_redirection(0,test);
 		print_redirection(test,0);
+		parse_redirection(1,test);
+		print_redirection(test,1);
+		parse_redirection(2,test);
+		print_redirection(test,2);
         //Your code goes here.......
         //Parse the comand
         //Execute the comand

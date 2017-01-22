@@ -73,14 +73,9 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-    printf("[%d] Standard input redirection : %s\n", i, c->redirection[i][STDIN]); // bug affiche null au lieu de "/var/log/messages"
+    printf("[%d] Standard input redirection : %s\n", i, c->redirection[i][STDIN]); 
     printf("[%d] Standard output redirection : %s\n", i, c->redirection[i][STDOUT]);
     printf("[%d] Error output redirection : %s\n", i, c->redirection[i][STDERR]);
-
-    if(c->redirection[i][STDIN] != NULL)
-    {
-        printf("[%d] Standard input redirection type : %s\n", i, (c->redirection_type[i][STDIN] == 1) ? "OVERRIDE" : "APPEND");
-    }
 
     if(c->redirection[i][STDOUT] != NULL)
     {
@@ -96,16 +91,16 @@ void print_redirection(cmd *c, int i){
 //Frees the memory allocated to store redirection info
 void free_redirection(cmd *c){
   int i;
-for (i= 0; i < c->nb_cmd_members; i++)
-{
-  free(c->redirection[i][STDIN]);
-  free(c->redirection[i][STDOUT]);
-  free(c->redirection[i][STDERR]);
-  free(c->redirection[i]);
-  free(c->redirection_type[i]);
-}
-free(c->redirection);
-free(c->redirection_type);
+  for (i= 0; i < c->nb_cmd_members; i++)
+  {
+    free(c->redirection[i][STDIN]);
+    free(c->redirection[i][STDOUT]);
+    free(c->redirection[i][STDERR]);
+    free(c->redirection[i]);
+    free(c->redirection_type[i]);
+  }
+  free(c->redirection);
+  free(c->redirection_type);
     //your implementation comes here
 }
 
@@ -164,57 +159,73 @@ void parse_members(char *s,cmd *c){
 
 //Remplit les champs redir et type_redir
 void parse_redirection(unsigned int i, cmd *c){
-    printf("%s\n",c->cmd_members[i] ); // bug avec l'espace
     unsigned int current_position= 0;
-    c->redirection = NULL;
-    c->redirection = realloc(c->redirection, sizeof(char *) * (3+1));
-    c->redirection_type = realloc(c->redirection, sizeof(int) * (3+1));
-    c->redirection_type[i][STDIN] = 0;
-    c->redirection_type[i][STDOUT] = 0;
-    c->redirection_type[i][STDERR] = 0;
-    printf("%d\n",strlen(c->cmd_members[i])); // affiche 3  pour "cat" au lieu de "cat < /var/log/messages" si on fait parse_members_args avant
-    while(c->cmd_members[i][current_position] != '\0'){ // pb avec espace 
+    c->redirection = (char***) malloc (sizeof(char **)*3);
+    c->redirection_type = (int**) malloc (sizeof(int)*3);
+    c->redirection[i]=NULL;
+    c->redirection_type[i]=NULL;
+    c->redirection[i]= (char **)realloc(c->redirection[i],sizeof(char *)*3);
+    c->redirection_type[i] = (int *)realloc(c->redirection_type[i],sizeof(int)*3);
+    while(c->cmd_members[i][current_position] != '\0'){ 
         if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
-            if(c->cmd_members[i][current_position + 2] == '>'){
-                char * token = strtok(c->cmd_members[i] + current_position + 3, " \n\t\0");
+             if(c->cmd_members[i][current_position + 2] == '>'){
+                char * token = strtok(c->cmd_members[i] + current_position + 3, "\0");
                 if(token != NULL){
-                    c->redirection[i][STDERR] = strdup(token);
-                    c->redirection_type[i][STDERR] = 0;
+                  c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
+                  c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
+                  memcpy(c->redirection[i][STDERR],token,strlen(token)+1);
+                  c->redirection_type[i][STDERR] = 0;
+                  c->redirection[i][STDOUT]=NULL;
+                  c->redirection[i][STDIN]=NULL;
                 }
                 current_position += 3;
             }
             else{
-                char * token = strtok(c->cmd_members[i] + current_position + 2, " \n\t\0");
+
+                char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
                 if(token != NULL){
-                    c->redirection[i][STDERR] = strdup(token);
-                    c->redirection_type[i][STDERR] = 1;
+                  c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
+                  c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
+                  memcpy(c->redirection[i][STDERR],token,strlen(token)+1);
+                  c->redirection_type[i][STDERR] = 1;
+                  c->redirection[i][STDOUT]=NULL;
+                  c->redirection[i][STDIN]=NULL;
                 }
                 current_position+=2;
             }
         }
         else if((char)c->cmd_members[i][current_position] == '>' && (char)c->cmd_members[i][current_position + 1] == '>'){
-            char * token = strtok(c->cmd_members[i] + current_position + 2, " \n\t\0");
+            char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
             if(token != NULL){
-                c->redirection[i][STDOUT] = strdup(token);
+                c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
+                c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
+                memcpy(c->redirection[i][STDOUT],token,strlen(token)+1);
                 c->redirection_type[i][STDOUT] = 0;
+                c->redirection[i][STDIN]=NULL;
+                c->redirection[i][STDERR]=NULL;
             }
             current_position+=2;
         }
         else if((char)c->cmd_members[i][current_position] == '>'){
-            char * token = strtok(c->cmd_members[i] + current_position + 1, " \n\t\0");
+            char * token = strtok(c->cmd_members[i] + current_position + 1, "\0");
             if(token != NULL){
-                c->redirection[i][STDOUT] = strdup(token);
+                c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
+                c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
+                memcpy(c->redirection[i][STDOUT],token,strlen(token)+1);
                 c->redirection_type[i][STDOUT] = 1;
+                c->redirection[i][STDIN]=NULL;
+                c->redirection[i][STDERR]=NULL;
             }
             current_position++;
         }
         else if((char)c->cmd_members[i][current_position] == '<'){
             char * token = strtok(c->cmd_members[i] + current_position + 1, "\0"); 
             if(token != NULL){
-                c->redirection[i][STDIN] = realloc(c->redirection[i][STDIN],sizeof(char *) * (strlen(token)));
-                printf("%d\n",i);
+                c->redirection[i][STDIN] = malloc(sizeof(char *) * (strlen(token)));
+                c->redirection_type[i][STDIN] = (int)malloc(sizeof(int));
                 memcpy(c->redirection[i][STDIN],token,strlen(token)+1);
-                c->redirection_type[i][STDIN] = 0;
+                c->redirection[i][STDOUT]=NULL;
+                c->redirection[i][STDERR]=NULL;
             }
             current_position++;
         }
