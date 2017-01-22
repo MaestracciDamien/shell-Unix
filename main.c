@@ -31,9 +31,8 @@ int main(int argc, char** argv)
 		cmd   * test = (cmd *) malloc (sizeof(cmd));
 		parse_members(readlineptr, test );
 		print_members(test);
-		parse_members_args(test);
-		print_members_args(test);
-		free_members_args(test);
+		/*parse_members_args(test);
+		print_members_args(test);*/ //fait bugger parse_redirection
 		parse_redirection(0,test);
 		print_redirection(test,0);
         //Your code goes here.......

@@ -73,9 +73,24 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-  (c->redirection[i][STDIN] == NULL ) ? printf("redirection[%d][STDIN]=NULL\n",i) : printf("redirection[%d][STDIN]=\"%s\"\n",i,c->redirection[i][STDIN]);
-  (c->redirection[i][STDOUT] == NULL ) ? printf("redirection[%d][STDOUT]=NULL\n",i) : printf("redirection[%d][STDOUT]=\"%s\"\n",i,c->redirection[i][STDOUT]);
-  (c->redirection[i][STDERR] == NULL ) ? printf("redirection[%d][STDERR]=NULL\n",i) : printf("redirection[%d][STDERR]=\"%s\"\n",i,c->redirection[i][STDERR]);
+    printf("[%d] Standard input redirection : %s\n", i, c->redirection[i][STDIN]);
+    printf("[%d] Standard output redirection : %s\n", i, c->redirection[i][STDOUT]);
+    printf("[%d] Error output redirection : %s\n", i, c->redirection[i][STDERR]);
+
+    if(c->redirection[i][STDIN] != NULL)
+    {
+        printf("[%d] Standard input redirection type : %s\n", i, (c->redirection_type[i][STDIN] == 1) ? "OVERRIDE" : "APPEND");
+    }
+
+    if(c->redirection[i][STDOUT] != NULL)
+    {
+        printf("[%d] Standard output redirection type : %s\n", i, (c->redirection_type[i][STDOUT] == 1) ? "OVERRIDE" : "APPEND");
+    }
+
+    if(c->redirection[i][STDERR] != NULL)
+    {
+        printf("[%d] Error output redirection type : %s\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
+    }
 }
 
 //Frees the memory allocated to store redirection info
@@ -149,6 +164,7 @@ void parse_members(char *s,cmd *c){
 
 //Remplit les champs redir et type_redir
 void parse_redirection(unsigned int i, cmd *c){
+    printf("%s\n",c->cmd_members[i] ); // bug avec l'espace
     unsigned int current_position= 0;
     c->redirection = NULL;
     c->redirection = realloc(c->redirection, sizeof(char *) * (3+1));
@@ -159,10 +175,8 @@ void parse_redirection(unsigned int i, cmd *c){
     c->redirection_type[i][STDIN] = 0;
     c->redirection_type[i][STDOUT] = 0;
     c->redirection_type[i][STDERR] = 0;
-    printf("%s\n",c->cmd_members[i] ); // bug avec l'espace
-    printf("%d\n",strlen(c->cmd_members[i])); // affiche 3  pour "cat" au lieu de "cat < /var/log/messages"
-    while(c->cmd_members[i][current_position] != '\0' || current_position!=strlen(c->cmd_members[i])){ // pb avec espace 
-        printf("%c\n",c->cmd_members[i][current_position]);
+    printf("%d\n",strlen(c->cmd_members[i])); // affiche 3  pour "cat" au lieu de "cat < /var/log/messages" si on fait parse_members_args avant
+    while(c->cmd_members[i][current_position] != '\0'){ // pb avec espace 
         if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
             if(c->cmd_members[i][current_position + 2] == '>'){
                 char * token = strtok(c->cmd_members[i] + current_position + 3, " \n\t\0");
@@ -198,11 +212,14 @@ void parse_redirection(unsigned int i, cmd *c){
             current_position++;
         }
         else if((char)c->cmd_members[i][current_position] == '<'){
-            const char token[strlen(c->cmd_members[i])];
-            memcpy(c->cmd_members[i],token,current_position +1);
-            printf("%s\n",token);
+            char * token = strtok(c->cmd_members[i] + current_position + 1, "\0"); 
             if(token != NULL){
-                c->redirection[i][STDIN] = strdup(token);
+                c->redirection[i][STDIN] = realloc(c->redirection[i][STDIN],sizeof(char *) * (strlen(token)));
+                printf("%s\n",token);
+                printf("%d\n",strlen(token));
+                memcpy(c->redirection[i][STDIN],token,strlen(token)+1);
+                printf("%d\n",i);
+                printf("%s\n",c->redirection[i][STDIN]);  //affiche null devrait afficher /var/log/messages
                 c->redirection_type[i][STDIN] = 0;
             }
             current_position++;
