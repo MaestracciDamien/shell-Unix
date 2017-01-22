@@ -1,4 +1,12 @@
 #include "shell_fct.h"
+
+
+void handle(int sig) {
+    printf("Hello\n");
+    --breakflag;
+    alarm(1);
+}
+
 int exec_command(cmd* my_cmd){
     //Your implementation comes here
     int i;
@@ -59,8 +67,17 @@ int exec_command(cmd* my_cmd){
       freopen (my_cmd->redirection[i][STDERR],"w+",stderr);
     }
   }
-  return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
 
+  pid_t pid;
+  if ((pid =fork())==0)
+  {
+  return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
+  }
+  else
+  {
+    signal(SIGALRM, handler);
+    alarm(5)
+  wait(0);
   if (my_cmd->redirection[i][STDOUT] !=NULL)
   {
   fclose (stdout);
@@ -69,6 +86,8 @@ int exec_command(cmd* my_cmd){
   {
   fclose (stderr);
   }
+  }
+  return MYSHELL_CMD_OK;
 }
 
 
