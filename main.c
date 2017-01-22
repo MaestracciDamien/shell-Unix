@@ -34,6 +34,8 @@ int main(int argc, char** argv)
 		parse_members_args(test);
 		print_members_args(test);
 		free_members_args(test);
+		parse_redirection(0,test);
+		print_redirection(test,0);
         //Your code goes here.......
         //Parse the comand
         //Execute the comand

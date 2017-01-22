@@ -149,22 +149,66 @@ void parse_members(char *s,cmd *c){
 
 //Remplit les champs redir et type_redir
 void parse_redirection(unsigned int i, cmd *c){
-  //the path to the redirection file
-  char ***redirection;
-
-  //the redirecction type (append vs. override)
-  int **redirection_type;
-    //your implementation comes here
-    c->redirection[i] = (char **) malloc (sizeof(char*) *3);
-    c->redirection_type[i] = (char **) malloc (sizeof(char*) *3);
-    char * token;
-    char * delim = "<";
-  //  token = strtok(s, <);
-    if (token != NULL)
-    {
-      c->redirection[i][STDIN] = (char *) malloc (sizeof(char)*strlen(token));
-      memcpy(c->redirection[i][STDIN],token,strlen(token));
+    unsigned int current_position= 0;
+    c->redirection = NULL;
+    c->redirection = realloc(c->redirection, sizeof(char *) * (3+1));
+    c->redirection_type = realloc(c->redirection, sizeof(int) * (3+1));
+    c->redirection[i][STDIN] = NULL;
+    c->redirection[i][STDOUT] = NULL;
+    c->redirection[i][STDERR] = NULL;
+    c->redirection_type[i][STDIN] = 0;
+    c->redirection_type[i][STDOUT] = 0;
+    c->redirection_type[i][STDERR] = 0;
+    printf("%s\n",c->cmd_members[i] ); // bug avec l'espace
+    printf("%d\n",strlen(c->cmd_members[i])); // affiche 3  pour "cat" au lieu de "cat < /var/log/messages"
+    while(c->cmd_members[i][current_position] != '\0' || current_position!=strlen(c->cmd_members[i])){ // pb avec espace 
+        printf("%c\n",c->cmd_members[i][current_position]);
+        if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
+            if(c->cmd_members[i][current_position + 2] == '>'){
+                char * token = strtok(c->cmd_members[i] + current_position + 3, " \n\t\0");
+                if(token != NULL){
+                    c->redirection[i][STDERR] = strdup(token);
+                    c->redirection_type[i][STDERR] = 0;
+                }
+                current_position += 3;
+            }
+            else{
+                char * token = strtok(c->cmd_members[i] + current_position + 2, " \n\t\0");
+                if(token != NULL){
+                    c->redirection[i][STDERR] = strdup(token);
+                    c->redirection_type[i][STDERR] = 1;
+                }
+                current_position+=2;
+            }
+        }
+        else if((char)c->cmd_members[i][current_position] == '>' && (char)c->cmd_members[i][current_position + 1] == '>'){
+            char * token = strtok(c->cmd_members[i] + current_position + 2, " \n\t\0");
+            if(token != NULL){
+                c->redirection[i][STDOUT] = strdup(token);
+                c->redirection_type[i][STDOUT] = 0;
+            }
+            current_position+=2;
+        }
+        else if((char)c->cmd_members[i][current_position] == '>'){
+            char * token = strtok(c->cmd_members[i] + current_position + 1, " \n\t\0");
+            if(token != NULL){
+                c->redirection[i][STDOUT] = strdup(token);
+                c->redirection_type[i][STDOUT] = 1;
+            }
+            current_position++;
+        }
+        else if((char)c->cmd_members[i][current_position] == '<'){
+            const char token[strlen(c->cmd_members[i])];
+            memcpy(c->cmd_members[i],token,current_position +1);
+            printf("%s\n",token);
+            if(token != NULL){
+                c->redirection[i][STDIN] = strdup(token);
+                c->redirection_type[i][STDIN] = 0;
+            }
+            current_position++;
+        }
+        else{
+            current_position++;
+        }
     }
-    delim = ">";
-
 }
