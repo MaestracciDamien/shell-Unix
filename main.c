@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include "shell_fct.h"
 
-//To complete
 int main(int argc, char** argv)
 {
 	//..........
@@ -31,25 +30,13 @@ int main(int argc, char** argv)
 		parse_members(readlineptr, test );
 		print_members(test);
 		parse_members_args(test);
-		print_members_args(test);//fait bugger parse_redirection
+		print_members_args(test);
 		for (int i = 0; i< test->nb_cmd_members; i++)
 		{
 			parse_redirection(i,test);
 			print_redirection(test,i);
-
-
 		}
-
-
 		exec_command(test);
-
-        //Your code goes here.......
-        //Parse the comand
-        //Execute the comand
-        //Clean the house
-        //..........
-
 	}
-	//..........
 	return 0;
 }
