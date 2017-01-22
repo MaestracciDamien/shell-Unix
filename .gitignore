@@ -1,3 +1,6 @@
 *.o
+<<<<<<< HEAD
 myshell
-
+=======
+myshell
+>>>>>>> 04cef0599153a9c4ac828edb0917566ab81ad9ff
