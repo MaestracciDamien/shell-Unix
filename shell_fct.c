@@ -10,7 +10,7 @@ int exec_command(cmd* my_cmd){
   in = 0;
 
   /* Note the loop bound, we spawn here all, but the last stage of the pipeline.  */
-  for (i = 0; i < my_cmd->nb_cmd_members - 1; ++i)
+  for (i = 0; i < my_cmd->nb_cmd_members -1; ++i)
     {
       pipe (fd);
 
@@ -30,7 +30,7 @@ int exec_command(cmd* my_cmd){
     dup2 (in, 0);
 
   /* Execute the last stage with the current process. */
-  return execvp (my_cmd->cmd_members_args[0], (char * const *)my_cmd->cmd_members_args[i]);
+  return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
 }
 
 
