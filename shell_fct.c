@@ -59,6 +59,15 @@ int exec_command(cmd* my_cmd){
     }
   }
   return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
+
+  if (my_cmd->redirection[i][STDOUT] !=NULL)
+  {
+  fclose (stdout);
+  }
+  if (my_cmd->redirection[i][STDERR] !=NULL)
+  {
+  fclose (stderr);
+  }
 }
 
 
