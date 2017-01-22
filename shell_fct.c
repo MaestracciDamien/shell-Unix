@@ -1,9 +1,9 @@
 #include "shell_fct.h"
 int exec_command(cmd* my_cmd){
     //Your implementation comes here
-    int i;
-    int in, fd [2];
-
+  int i= 0;
+  int in, fd [2];
+  clock_t start_t;
 
   /* The first process should get its input from the original file descriptor 0.  */
   in = 0;
@@ -12,9 +12,9 @@ int exec_command(cmd* my_cmd){
   {
     freopen (my_cmd->redirection[0][STDIN],"r",stdin);
   }
-
+  start_t = clock();
   /* Note the loop bound, we spawn here all, but the last stage of the pipeline.  */
-  for (i = 0; i < my_cmd->nb_cmd_members -1; ++i)
+  while (i < my_cmd->nb_cmd_members -1 && ((double) (clock()-start_t)/ CLOCKS_PER_SEC)<5.0)
     {
       pipe (fd);
 
@@ -26,6 +26,7 @@ int exec_command(cmd* my_cmd){
 
       /* Keep the read end of the pipe, the next child will read from there.  */
       in = fd [0];
+      i++;
     }
 
   /* Last stage of the pipeline - set stdin be the read end of the previous pipe
