@@ -11,7 +11,6 @@
 int main(int argc, char** argv)
 {
 	//..........
-	int ret = MYSHELL_CMD_OK;
 	char* readlineptr;
 	struct passwd* infos;
 	char str[1024];
@@ -19,7 +18,7 @@ int main(int argc, char** argv)
 	char workingdirectory[256];
 
 	//..........
-	while(ret != MYSHELL_FCT_EXIT)
+	while(1)
 	{
 		//Get your session info
     	infos=getpwuid(getuid());
