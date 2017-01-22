@@ -30,6 +30,31 @@ int exec_command(cmd* my_cmd){
     dup2 (in, 0);
 
   /* Execute the last stage with the current process. */
+  if (my_cmd->redirection[i][STDOUT] !=NULL)
+  {
+    if (my_cmd->redirection_type[i][STDOUT] == 1)
+    {
+      freopen (my_cmd->redirection[i][STDOUT],"a+",stdout);
+
+    }
+    else
+    {
+      freopen (my_cmd->redirection[i][STDOUT],"w+",stdout);
+    }
+  }
+
+  if (my_cmd->redirection[i][STDERR] !=NULL)
+  {
+    if (my_cmd->redirection_type[i][STDERR] == 1)
+    {
+      freopen (my_cmd->redirection[i][STDERR],"a+",stderr);
+
+    }
+    else
+    {
+      freopen (my_cmd->redirection[i][STDERR],"w+",stderr);
+    }
+  }
   return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
 }
 
