@@ -1,7 +1,7 @@
 #include "cmd.h"
 #include <unistd.h>
 #include <stdio.h>
-
+#include <time.h>
 //Your imports come here
 
 //Terminate shell
