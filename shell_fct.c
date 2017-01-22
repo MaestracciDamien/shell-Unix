@@ -62,10 +62,23 @@ int exec_command(cmd* my_cmd){
       freopen (my_cmd->redirection[i][STDERR],"w+",stderr);
     }
   }
+<<<<<<< HEAD
 
     return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
 
   }
+=======
+  return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
+  if (my_cmd->redirection[i][STDOUT] !=NULL)
+  {
+  fclose (stdout);
+  }
+  if (my_cmd->redirection[i][STDERR] !=NULL)
+  {
+  fclose (stderr);
+  }
+}
+>>>>>>> b2445c4781e49ee29dee26432d9c08f1e872e1e5
 
 
 int spawn_proc (int in, int out, char ** args)

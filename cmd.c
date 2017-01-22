@@ -11,7 +11,6 @@
 
 //Prints the contents of members_args to the console
 void print_members_args(cmd *c){
-    //your implementation comes here
     int i,j;
     for (i =0; i < c->nb_cmd_members; i++)
     {
@@ -57,7 +56,6 @@ void print_members(cmd *c){
   {
     printf("cmd_members[%d]=\"%s\"\n",i, c->cmd_members[i]);
   }
-    //your implementation comes here
 }
 
 //Frees the memory allocated to store member information
@@ -68,7 +66,6 @@ void free_members(cmd *c){
     free(c->cmd_members[i]);
   }
   free(c->cmd_members);
-    //your implementation comes here
 }
 
 //Prints the redirection information for member i
@@ -119,13 +116,11 @@ void free_redirection(cmd *c){
   }
   free(c->redirection);
   free(c->redirection_type);
-    //your implementation comes here
 }
 
 //Remplit les champs cmd_args et nb_args_membres
 void parse_members_args(cmd *c){
 	  int i=0;
-    //int cpt=0;
     c->cmd_members_args =  (char***) malloc (sizeof(char **)*c->nb_cmd_members);
     if (c->cmd_members_args == NULL) {
       exit(-1);
@@ -142,7 +137,6 @@ void parse_members_args(cmd *c){
         while (token!=NULL && strcmp(token,"<")!=0 && strcmp(token,">")!=0 && strcmp(token,">>")!=0)
         {
             int length = strlen(token)+1;
-            //printf("%s\n", token );
             c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
             if (c->cmd_members_args[i] == NULL) {
               exit(-1);
@@ -152,8 +146,8 @@ void parse_members_args(cmd *c){
               exit(-1);
             }
             memcpy(c->cmd_members_args[i][j],token,length);
-              j++;
-              token = strtok(NULL," ");
+            j++;
+            token = strtok(NULL," ");
 
         }
         c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
@@ -161,7 +155,6 @@ void parse_members_args(cmd *c){
           exit(-1);
         }
         c->cmd_members_args[i][j] = NULL;
-
         c->nb_members_args[i] = j;
         c->cmd_members[i] = strdup(tmp);
         i++;
@@ -171,7 +164,6 @@ void parse_members_args(cmd *c){
 
 //Remplit les champs initial_cmd, membres_cmd et nb_membres
 void parse_members(char *s,cmd *c){
-    //your implementation comes here
     c->init_cmd = (char *) malloc (sizeof(char) * strlen(s));
     if (c->init_cmd == NULL) {
       exit(-1);
