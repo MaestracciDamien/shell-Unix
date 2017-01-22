@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	while(ret != MYSHELL_FCT_EXIT)
 	{
 		//Get your session info
-    infos=getpwuid(getuid());
+    	infos=getpwuid(getuid());
 		gethostname(hostname, 256);
 		getcwd(workingdirectory, 256);
         //Print it to the console
