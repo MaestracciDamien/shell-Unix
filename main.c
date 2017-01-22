@@ -41,6 +41,9 @@ int main(int argc, char** argv)
 
 		}
 
+
+		exec_command(test);
+
         //Your code goes here.......
         //Parse the comand
         //Execute the comand
