@@ -73,7 +73,7 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-    printf("[%d] Standard input redirection : %s\n", i, c->redirection[i][STDIN]);
+    printf("[%d] Standard input redirection : %s\n", i, c->redirection[i][STDIN]); // bug affiche null au lieu de "/var/log/messages"
     printf("[%d] Standard output redirection : %s\n", i, c->redirection[i][STDOUT]);
     printf("[%d] Error output redirection : %s\n", i, c->redirection[i][STDERR]);
 
@@ -169,9 +169,6 @@ void parse_redirection(unsigned int i, cmd *c){
     c->redirection = NULL;
     c->redirection = realloc(c->redirection, sizeof(char *) * (3+1));
     c->redirection_type = realloc(c->redirection, sizeof(int) * (3+1));
-    c->redirection[i][STDIN] = NULL;
-    c->redirection[i][STDOUT] = NULL;
-    c->redirection[i][STDERR] = NULL;
     c->redirection_type[i][STDIN] = 0;
     c->redirection_type[i][STDOUT] = 0;
     c->redirection_type[i][STDERR] = 0;
@@ -215,11 +212,8 @@ void parse_redirection(unsigned int i, cmd *c){
             char * token = strtok(c->cmd_members[i] + current_position + 1, "\0"); 
             if(token != NULL){
                 c->redirection[i][STDIN] = realloc(c->redirection[i][STDIN],sizeof(char *) * (strlen(token)));
-                printf("%s\n",token);
-                printf("%d\n",strlen(token));
-                memcpy(c->redirection[i][STDIN],token,strlen(token)+1);
                 printf("%d\n",i);
-                printf("%s\n",c->redirection[i][STDIN]);  //affiche null devrait afficher /var/log/messages
+                memcpy(c->redirection[i][STDIN],token,strlen(token)+1);
                 c->redirection_type[i][STDIN] = 0;
             }
             current_position++;
