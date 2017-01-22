@@ -9,3 +9,4 @@
 
 //Execute a command
 int exec_command(cmd *c);
+int spawn_proc (int in, int out, char ** args);

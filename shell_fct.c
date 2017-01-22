@@ -1,12 +1,17 @@
 #include "shell_fct.h"
-
 int exec_command(cmd* my_cmd){
     //Your implementation comes here
     int i;
     int in, fd [2];
 
+
   /* The first process should get its input from the original file descriptor 0.  */
   in = 0;
+
+  if (my_cmd->redirection[0][STDIN] !=NULL)
+  {
+    freopen (my_cmd->redirection[0][STDIN],"r",stdin);
+  }
 
   /* Note the loop bound, we spawn here all, but the last stage of the pipeline.  */
   for (i = 0; i < my_cmd->nb_cmd_members -1; ++i)
