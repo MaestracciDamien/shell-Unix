@@ -75,29 +75,35 @@ void free_members(cmd *c){
 void print_redirection(cmd *c, int i){
     if(c->redirection[i][STDIN] != NULL)
     {
-        printf("[%d] Standard input redirection : \"%s\"\n", i, c->redirection[i][STDIN]); 
+        printf("redirection[%d][STDIN]=\"%s\"\n", i, c->redirection[i][STDIN]);
     }
     else {
-        printf("[%d] Standard input redirection : NULL\n", i); 
+        printf("redirection[%d][STDIN]=NULL\n", i);
     }
 
-    if(c->redirection[i][STDOUT] != NULL)
+/*    if(c->redirection[i][STDOUT] != NULL)
     {
-        printf("[%d] Standard output redirection : \"%s\"\n", i, c->redirection[i][STDOUT]);
-        printf("[%d] Standard output redirection type : %s\n", i, (c->redirection_type[i][STDOUT] == 1) ? "OVERRIDE" : "APPEND");
+        printf("redirection[%d][STDOUT]=\"%s\"\n", i, c->redirection[i][STDOUT]);
     }
     else {
-        printf("[%d] Standard output redirection : NULL \n",i);
+        printf("redirection[%d][STDOUT]=NULL \n",i);
     }
 
     if(c->redirection[i][STDERR] != NULL)
     {
-        printf("[%d] Error output redirection : \"%s\"\n", i, c->redirection[i][STDERR]);
-        printf("[%d] Error output redirection type : %s\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
+        printf("redirection[%d][STDERR]=\"%s\"\n", i, c->redirection[i][STDERR]);
     }
     else {
-        printf("[%d] Error output redirection : NULL \n", i);
+        printf("redirection[%d][STDERR]=NULL \n", i);
     }
+    if(c->redirection[i][STDOUT] != NULL)
+    {
+        printf("redirection_type[%d][STDOUT]=%s\n", i, (c->redirection_type[i][STDOUT] == 1) ? "OVERRIDE" : "APPEND");
+    }
+    if(c->redirection[i][STDERR] != NULL)
+    {
+        printf("redirection_type[%d][STDERR]=%s\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
+    }*/
 }
 
 //Frees the memory allocated to store redirection info
@@ -168,22 +174,22 @@ void parse_members(char *s,cmd *c){
       i++;
     }
     c->nb_cmd_members = i;
+    c->redirection = (char***) malloc (sizeof(char **)*i);
+    c->redirection_type = (int**) malloc (sizeof(int)*i);
 
 }
 
 //Remplit les champs redir et type_redir
 void parse_redirection(unsigned int i, cmd *c){
     unsigned int current_position= 0;
-    c->redirection = (char***) malloc (sizeof(char **)*3);
-    c->redirection_type = (int**) malloc (sizeof(int)*3);
     c->redirection[i]=NULL;
     c->redirection_type[i]=NULL;
     c->redirection[i]= (char **)realloc(c->redirection[i],sizeof(char *)*3);
     c->redirection_type[i] = (int *)realloc(c->redirection_type[i],sizeof(int)*3);
-    while(c->cmd_members[i][current_position] != '\0'){ 
+    while(c->cmd_members[i][current_position] != '\0'){
         if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
              if(c->cmd_members[i][current_position + 2] == '>'){
-                char * token = strtok(c->cmd_members[i] + current_position + 3, "\0");
+                char * token = strtok(c->cmd_members[i] + current_position + 3, "\n\t\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
                   c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
@@ -196,7 +202,7 @@ void parse_redirection(unsigned int i, cmd *c){
             }
             else{
 
-                char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
+                char * token = strtok(c->cmd_members[i] + current_position + 2, "\n\t\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
                   c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
@@ -209,7 +215,7 @@ void parse_redirection(unsigned int i, cmd *c){
             }
         }
         else if((char)c->cmd_members[i][current_position] == '>' && (char)c->cmd_members[i][current_position + 1] == '>'){
-            char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
+            char * token = strtok(c->cmd_members[i] + current_position + 2, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
                 c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
@@ -221,7 +227,7 @@ void parse_redirection(unsigned int i, cmd *c){
             current_position+=2;
         }
         else if((char)c->cmd_members[i][current_position] == '>'){
-            char * token = strtok(c->cmd_members[i] + current_position + 1, "\0");
+            char * token = strtok(c->cmd_members[i] + current_position + 1, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
                 c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
@@ -233,7 +239,7 @@ void parse_redirection(unsigned int i, cmd *c){
             current_position++;
         }
         else if((char)c->cmd_members[i][current_position] == '<'){
-            char * token = strtok(c->cmd_members[i] + current_position + 1, "\0"); 
+            char * token = strtok(c->cmd_members[i] + current_position + 1, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDIN] = malloc(sizeof(char *) * (strlen(token)));
                 c->redirection_type[i][STDIN] = (int)malloc(sizeof(int));
