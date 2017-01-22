@@ -63,25 +63,9 @@ int exec_command(cmd* my_cmd){
     }
   }
 
-  pid_t pid;
-  if ((pid =fork())==0)
-  {
-  return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
+    return execvp (my_cmd->cmd_members_args[i][0], (char * const *)my_cmd->cmd_members_args[i]);
+
   }
-  else
-  {
-  wait(0);
-  if (my_cmd->redirection[i][STDOUT] !=NULL)
-  {
-  fclose (stdout);
-  }
-  if (my_cmd->redirection[i][STDERR] !=NULL)
-  {
-  fclose (stderr);
-  }
-  }
-  return MYSHELL_CMD_OK;
-}
 
 
 int spawn_proc (int in, int out, char ** args)

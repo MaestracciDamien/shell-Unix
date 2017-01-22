@@ -127,7 +127,13 @@ void parse_members_args(cmd *c){
 	  int i=0;
     //int cpt=0;
     c->cmd_members_args =  (char***) malloc (sizeof(char **)*c->nb_cmd_members);
+    if (c->cmd_members_args == NULL) {
+      exit(-1);
+    }
     c->nb_members_args = (unsigned int*) malloc (sizeof(int)*c->nb_cmd_members);
+    if (c->nb_members_args == NULL) {
+      exit(-1);
+    }
     while (i < (c->nb_cmd_members)){
         char * tmp= strdup(c->cmd_members[i]);
         int j=0;
@@ -138,13 +144,22 @@ void parse_members_args(cmd *c){
             int length = strlen(token)+1;
             //printf("%s\n", token );
             c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
+            if (c->cmd_members_args[i] == NULL) {
+              exit(-1);
+            }
             c->cmd_members_args[i][j] = (char *) malloc (sizeof(char)*length);
+            if (c->cmd_members_args[i][j] == NULL) {
+              exit(-1);
+            }
             memcpy(c->cmd_members_args[i][j],token,length);
               j++;
               token = strtok(NULL," ");
 
         }
         c->cmd_members_args[i]= (char ** ) realloc (c->cmd_members_args[i], sizeof(char *) *j+1);
+        if (c->cmd_members_args[i] == NULL) {
+          exit(-1);
+        }
         c->cmd_members_args[i][j] = NULL;
 
         c->nb_members_args[i] = j;
@@ -158,6 +173,9 @@ void parse_members_args(cmd *c){
 void parse_members(char *s,cmd *c){
     //your implementation comes here
     c->init_cmd = (char *) malloc (sizeof(char) * strlen(s));
+    if (c->init_cmd == NULL) {
+      exit(-1);
+    }
     memcpy(c->init_cmd,s,strlen(s));
     int i =0;
     char * token;
@@ -167,6 +185,9 @@ void parse_members(char *s,cmd *c){
     while( token != NULL )
     {
       c->cmd_members = (char **) realloc(c->cmd_members, sizeof(char *) * (i+1));
+      if (c->cmd_members == NULL) {
+        exit(-1);
+      }
       int  length = strlen(token)+1;
       c->cmd_members[i] = (char *) malloc (length);
       memcpy(c->cmd_members[i],token,length);
@@ -175,7 +196,13 @@ void parse_members(char *s,cmd *c){
     }
     c->nb_cmd_members = i;
     c->redirection = (char***) malloc (sizeof(char **)*i);
+    if (c->redirection == NULL) {
+      exit(-1);
+    }
     c->redirection_type = (int**) malloc (sizeof(int)*i);
+    if (c->redirection_type == NULL) {
+      exit(-1);
+    }
 
 }
 
@@ -183,7 +210,13 @@ void parse_members(char *s,cmd *c){
 void parse_redirection(unsigned int i, cmd *c){
     unsigned int current_position= 0;
     c->redirection[i]= (char **)malloc(sizeof(char *)*3);
+    if (c->redirection[i] == NULL) {
+      exit(-1);
+    }
     c->redirection_type[i] = (int *)malloc(sizeof(int)*3);
+    if (c->redirection_type[i] == NULL) {
+      exit(-1);
+    }
     c->redirection[i][STDIN] =NULL;
     c->redirection[i][STDOUT] =NULL;
     c->redirection[i][STDERR] =NULL;
@@ -196,6 +229,9 @@ void parse_redirection(unsigned int i, cmd *c){
                 char * token = strtok(c->cmd_members[i] + current_position + 3, "\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
+                  if (c->redirection[i][STDERR] == NULL) {
+                    exit(-1);
+                  }
                   c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
                   memcpy(c->redirection[i][STDERR],token,strlen(token)+1);
                   c->redirection_type[i][STDERR] = 0;
@@ -211,6 +247,10 @@ void parse_redirection(unsigned int i, cmd *c){
                 char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
+
+                  if (c->redirection[i][STDERR] == NULL) {
+                    exit(-1);
+                  }
                   c->redirection_type[i][STDERR] = (int)malloc(sizeof(int));
                   memcpy(c->redirection[i][STDERR],token,strlen(token)+1);
                   c->redirection_type[i][STDERR] = 1;
@@ -227,6 +267,9 @@ void parse_redirection(unsigned int i, cmd *c){
             char * token = strtok(c->cmd_members[i] + current_position + 2, "\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
+                if (c->redirection[i][STDOUT] == NULL) {
+                  exit(-1);
+                }
                 c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
                 memcpy(c->redirection[i][STDOUT],token,strlen(token)+1);
                 c->redirection_type[i][STDOUT] = 0;
@@ -242,6 +285,9 @@ void parse_redirection(unsigned int i, cmd *c){
             char * token = strtok(c->cmd_members[i] + current_position + 1, "\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
+                if (c->redirection[i][STDOUT] == NULL) {
+                  exit(-1);
+                }
                 c->redirection_type[i][STDOUT] = (int)malloc(sizeof(int));
                 memcpy(c->redirection[i][STDOUT],token,strlen(token)+1);
                 c->redirection_type[i][STDOUT] = 1;
@@ -257,6 +303,9 @@ void parse_redirection(unsigned int i, cmd *c){
             char * token = strtok(c->cmd_members[i] + current_position + 1, " ");
             if(token != NULL){
                 c->redirection[i][STDIN] = malloc(sizeof(char *) * (strlen(token)));
+                if (c->redirection[i][STDIN] == NULL) {
+                  exit(-1);
+                }
                 c->redirection_type[i][STDIN] = (int)malloc(sizeof(int));
                 c->redirection[i][STDIN] = strdup(token);
                 c->redirection[i][STDOUT]=NULL;
