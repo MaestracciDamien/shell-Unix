@@ -81,7 +81,7 @@ void print_redirection(cmd *c, int i){
         printf("redirection[%d][STDIN]=NULL\n", i);
     }
 
-/*    if(c->redirection[i][STDOUT] != NULL)
+    if(c->redirection[i][STDOUT] != NULL)
     {
         printf("redirection[%d][STDOUT]=\"%s\"\n", i, c->redirection[i][STDOUT]);
     }
@@ -103,7 +103,7 @@ void print_redirection(cmd *c, int i){
     if(c->redirection[i][STDERR] != NULL)
     {
         printf("redirection_type[%d][STDERR]=%s\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
-    }*/
+    }
 }
 
 //Frees the memory allocated to store redirection info
@@ -182,10 +182,11 @@ void parse_members(char *s,cmd *c){
 //Remplit les champs redir et type_redir
 void parse_redirection(unsigned int i, cmd *c){
     unsigned int current_position= 0;
-    c->redirection[i]=NULL;
-    c->redirection_type[i]=NULL;
-    c->redirection[i]= (char **)realloc(c->redirection[i],sizeof(char *)*3);
-    c->redirection_type[i] = (int *)realloc(c->redirection_type[i],sizeof(int)*3);
+    c->redirection[i]= (char **)malloc(sizeof(char *)*3);
+    c->redirection_type[i] = (int *)malloc(sizeof(int)*3);
+    c->redirection[i][STDIN] =NULL;
+    c->redirection[i][STDOUT] =NULL;
+    c->redirection[i][STDERR] =NULL;
     while(c->cmd_members[i][current_position] != '\0'){
         if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
              if(c->cmd_members[i][current_position + 2] == '>'){
