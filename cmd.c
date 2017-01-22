@@ -189,7 +189,10 @@ void parse_redirection(unsigned int i, cmd *c){
     c->redirection[i][STDERR] =NULL;
     while(c->cmd_members[i][current_position] != '\0'){
         if((char)c->cmd_members[i][current_position] == '2' && (char)c->cmd_members[i][current_position + 1] == '>'){
-             if(c->cmd_members[i][current_position + 2] == '>'){
+            if(c->cmd_members[i][current_position + 2] == '>'){
+                if(c->cmd_members[i][current_position + 3] == ' '){
+                  current_position++;
+                }
                 char * token = strtok(c->cmd_members[i] + current_position + 3, "\n\t\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
@@ -202,7 +205,9 @@ void parse_redirection(unsigned int i, cmd *c){
                 current_position += 3;
             }
             else{
-
+                if(c->cmd_members[i][current_position + 2] == ' '){
+                  current_position++;
+                }
                 char * token = strtok(c->cmd_members[i] + current_position + 2, "\n\t\0");
                 if(token != NULL){
                   c->redirection[i][STDERR] = malloc(sizeof(char *) * (strlen(token)));
@@ -216,6 +221,9 @@ void parse_redirection(unsigned int i, cmd *c){
             }
         }
         else if((char)c->cmd_members[i][current_position] == '>' && (char)c->cmd_members[i][current_position + 1] == '>'){
+            if(c->cmd_members[i][current_position + 2] == ' '){
+                  current_position++;
+            }
             char * token = strtok(c->cmd_members[i] + current_position + 2, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
@@ -228,6 +236,9 @@ void parse_redirection(unsigned int i, cmd *c){
             current_position+=2;
         }
         else if((char)c->cmd_members[i][current_position] == '>'){
+            if(c->cmd_members[i][current_position + 1] == ' '){
+                  current_position++;
+            }
             char * token = strtok(c->cmd_members[i] + current_position + 1, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDOUT] = malloc(sizeof(char *) * (strlen(token)));
@@ -240,6 +251,9 @@ void parse_redirection(unsigned int i, cmd *c){
             current_position++;
         }
         else if((char)c->cmd_members[i][current_position] == '<'){
+            if(c->cmd_members[i][current_position + 1] == ' '){
+                  current_position++;
+            }
             char * token = strtok(c->cmd_members[i] + current_position + 1, "\n\t\0");
             if(token != NULL){
                 c->redirection[i][STDIN] = malloc(sizeof(char *) * (strlen(token)));
