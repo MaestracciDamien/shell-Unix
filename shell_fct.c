@@ -3,8 +3,7 @@
 int exec_command(cmd* my_cmd){
     //Your implementation comes here
     int i;
-  pid_t pid;
-  int in, fd [2];
+    int in, fd [2];
 
   /* The first process should get its input from the original file descriptor 0.  */
   in = 0;
