@@ -73,18 +73,30 @@ void free_members(cmd *c){
 
 //Prints the redirection information for member i
 void print_redirection(cmd *c, int i){
-    printf("[%d] Standard input redirection : \"%s\"\n", i, c->redirection[i][STDIN]); 
-    printf("[%d] Standard output redirection : \"%s\"\n", i, c->redirection[i][STDOUT]);
-    printf("[%d] Error output redirection : \"%s\"\n", i, c->redirection[i][STDERR]);
+    if(c->redirection[i][STDIN] != NULL)
+    {
+        printf("[%d] Standard input redirection : \"%s\"\n", i, c->redirection[i][STDIN]); 
+    }
+    else {
+        printf("[%d] Standard input redirection : NULL\n", i); 
+    }
 
     if(c->redirection[i][STDOUT] != NULL)
     {
-        printf("[%d] Standard output redirection type : \"%s\"\n", i, (c->redirection_type[i][STDOUT] == 1) ? "OVERRIDE" : "APPEND");
+        printf("[%d] Standard output redirection : \"%s\"\n", i, c->redirection[i][STDOUT]);
+        printf("[%d] Standard output redirection type : %s\n", i, (c->redirection_type[i][STDOUT] == 1) ? "OVERRIDE" : "APPEND");
+    }
+    else {
+        printf("[%d] Standard output redirection : NULL \n",i);
     }
 
     if(c->redirection[i][STDERR] != NULL)
     {
-        printf("[%d] Error output redirection type : \"%s\"\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
+        printf("[%d] Error output redirection : \"%s\"\n", i, c->redirection[i][STDERR]);
+        printf("[%d] Error output redirection type : %s\n", i, (c->redirection_type[i][STDERR] == 1) ? "OVERRIDE" : "APPEND");
+    }
+    else {
+        printf("[%d] Error output redirection : NULL \n", i);
     }
 }
 
