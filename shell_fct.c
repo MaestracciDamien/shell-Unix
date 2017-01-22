@@ -1,11 +1,6 @@
 #include "shell_fct.h"
 
 
-void handle(int sig) {
-    printf("Hello\n");
-    --breakflag;
-    alarm(1);
-}
 
 int exec_command(cmd* my_cmd){
     //Your implementation comes here
@@ -75,8 +70,6 @@ int exec_command(cmd* my_cmd){
   }
   else
   {
-    signal(SIGALRM, handler);
-    alarm(5)
   wait(0);
   if (my_cmd->redirection[i][STDOUT] !=NULL)
   {
